@@ -406,100 +406,52 @@
                                     </div><!-- /.row -->
                                 </div><!-- /.price-container -->
 
-                             
-                                {% if single_product.stock <= 0 %} 
-                                {% else %}
-                                <div class="quantity-container info-container">
-                                    <div class="">
+                             <div style="margin-top: 30px;margin-bottom: 20px;margin-left: 30px;">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                    <p> <b>Color:</b></p>
+                                    <div style="display: flex;">
 
-                                       
-                                       
-
-                                        {% if single_product.variation_set.colors %}
-
-                                        <div class="qty">
-                                            <span class="label">Color :</span>
-                                        </div>
-                                        <style>
-                                            .qty-count input[type="color"] {
-                                                border-radius: 0 !important;
-                                                border: none !important;
-                                                outline: none !important;
-                                                box-shadow: none !important;
+                                        <div id="red-c" onclick="red()" style="height: 30px;width: 30px;background-color: red;border: 1px solid black;"></div>
+                                        <div id="blue-c" onclick="blue()" style="height: 30px;width: 30px;background-color: rgb(25, 0, 255);border: 1px solid black;margin-left: 10px;"></div>
+                                        <div id="blue-c" onclick="blue()" style="height: 30px;width: 30px;background-color: rgb(81, 255, 0);border: 1px solid black;margin-left: 10px;"></div>
+                                        <script>
+                                            let r = document.getElementById("red-c");
+                                            let x = document.getElementById("blue-c");
+                                            function red(){
+                                                r.style.border="2px solid black"
                                             }
-                                        </style>
-                                        <div class="qty-count">
-                                            <div class="cart-quantity">
-                                                <div class="quant-input">
-                                                    <!-- {% for i in single_product.variation_set.colors %}
-                                                    <input type="color" class="form-control border-0">
-                                                    {% endfor %} -->
-                                                    {% for i in single_product.variation_set.sizes %}
-                                                         <input type="color" class="form-control border-0" value="{{ i.variation_value }}">
-                                                    {% endfor %}
-                                                    
-                                                    <!-- <select name="color" class="form-control" required>
-                                                        <option value="" disabled selected>Select</option>
-                                                        {% for i in single_product.variation_set.colors %}
-                                                        <option value="{{ i.variation_value | lower }}">
-                                                            {{ i.variation_value | capfirst }}
-                                                        </option>
-                                                        {% endfor %}
-                                                    </select> -->
-                                              </div>
-                                            </div>
-                                        </div>
+                                            function blue(){
+                                                x.style.border="2px solid black"
+                                            }
+                                            
+                                            </script>
+                                            </div>    
                                         
-                                        {% endif %}
-                                        {% if single_product.variation_set.sizes %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p> <b>SIze:</b></p>
 
-                                        <div class="qty">
-                                            <span class="label">Size :</span>
-                                        </div>
-                                        
-                                        <div class="qty-count">
-                                            <div class="cart-quantity">
-                                                <div class="quant-input">
-                                                    <select name="size" class="form-control" required>
-                                                        <option value="" disabled selected>Select</option>
-                                                        {% for i in single_product.variation_set.sizes %}
-                                                        <option value="{{ i.variation_value | lower }}">
-                                                            {{ i.variation_value | capfirst }}
-                                                        </option>
-                                                        {% endfor %}
-                                                    </select>
-                                              </div>
-                                            </div>
-                                        </div>
-                                        
-                                        {% endif %}
-
-                                        <div class="qty" style="visibility: hidden;">
-                                            <span class="label">Color :</span>
-                                        </div>
-                                        
-                                        <div class="qty-count" style="visibility: hidden;">
-                                            <div class="cart-quantity">
-                                                <div class="quant-input">
-                                                    <input type="color" class="form-control border-0">
-                                                   {% comment %} <select class="form-control" name="" id="">
-                                                    <option value="">red</option>
-                                                   </select> {% endcomment %}
-                                              </div>
-                                            </div>
-                                        </div>
-    
-                                        <div class="add-btn" style="margin-top: 15px;">
-                                            <button type="submit"  class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</button>
+                                        <div>
+                                            <select name="" class="form-control" id="">
+                                                <option value="">Select</option>
+                                                <option value="">S</option>
+                                                <option value="">M</option>
+                                                <option value="">XL</option>
+                                            </select>
                                         </div>
 
-                                        <!-- Button trigger modal -->
+                                    </div>
 
-                                        
-                                    </div><!-- /.row -->
-                                </div><!-- /.quantity-container -->
-                                {% endif %}
 
+                                    
+                                    
+                                </div>
+                             </div>
+                               
+                                <div class="add-btn" style="margin-top: 15px;">
+                                    <button type="submit"  class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</button>
+                                </div>
                                 
     
                                 

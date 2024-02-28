@@ -6,6 +6,7 @@ from .models import Cart, CartItem
 from django.core.exceptions import ObjectDoesNotExist
 
 
+
 # usa a session id para criar o carrinho
 def _cart_id(request):  # private function
     cart = request.session.session_key

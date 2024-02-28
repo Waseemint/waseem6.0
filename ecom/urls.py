@@ -17,7 +17,7 @@ urlpatterns = [
     path('store/', include(store_urls)),
     path('cart/', include(carts_urls)),
     path('orders/', include(orders_urls)),
-    path('create-your-own', include(custom_urls)),
+    path('create-your-own/', include(custom_urls)),
 
 
 ]

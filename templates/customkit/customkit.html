@@ -232,8 +232,8 @@
               <div class="category-product">
                 <div class="row">
 
-                  {% if products %}
-					        {% for product in products %}
+                  {% if custom_products %}
+					        {% for product in custom_products %}
 
                   <div class="col-sm-6 col-md-4 col-lg-3">
                   <div class="item">
@@ -241,7 +241,7 @@
                       <div class="product">
                         <div class="product-image">
                           <div class="image"> 
-                            <a href="{{product.get_url}}">
+                            <a href="{% url 'custom_product_detail' product.slug %}">
                               <img src="{{ product.images.url }}" alt=""> 
                                <img src="{{ product.images_hover.url }}" alt="" class="hover-image">
                            </a> 
@@ -253,7 +253,7 @@
                         <!-- /.product-image -->
                         
                         <div class="product-info text-left">
-                          <h3 class="name"><a href="{{product.get_url}}">{{product.product_name}}</a></h3>
+                          <h3 class="name"><a href="{% url 'custom_product_detail' product.slug %}">{{product.product_name}}</a></h3>
                           <div class="rating">
                             <span>
                               <i class="fa fa-star{% if product.average_review < 0.5 %}-o{% elif product.average_review >= 0.5 and product.average_review < 1%}-half-o{% endif %}"
@@ -284,8 +284,8 @@
                             <ul class="list-unstyled">
                               <li class="lnk wishlist" style="visibility: hidden;"> <a class="add-to-cart" href="detail.html" title="Wishlist"> <i class="icon fa fa-heart"></i> </a> </li>
                               <li class="add-cart-button btn-group">
-                                <button class="btn btn-primary icon" onclick="window.location.href=`{{ product.get_url }}`" data-toggle="dropdown" type="button"> <i class="fa fa-shopping-cart"></i> </button>
-                                <button class="btn btn-primary cart-btn" onclick="window.location.href=`{{ product.get_url }}`" type="button">Add to cart</button>
+                                <button class="btn btn-primary icon" onclick="window.location.href=`{% url 'custom_product_detail' product.slug %}`" data-toggle="dropdown" type="button"> <i class="fa fa-shopping-cart"></i> </button>
+                                <button class="btn btn-primary cart-btn" onclick="window.location.href=`{% url 'custom_product_detail' product.slug %}`" type="button">Add to cart</button>
                               </li>
                               <li class="lnk"  style="visibility: hidden;"> <a class="add-to-cart" href="detail.html" title="Compare"> <i class="fa fa-signal"></i> </a> </li>
                             </ul>
@@ -304,7 +304,7 @@
                    {% endfor %}
                   {% else %}
                 <div>
-                  <h2>No result found. Please try again.</h2>
+                  <h2 class="text-center">No result found. Please try again.</h2>
                 </div>
                 {% endif %}
                 
@@ -374,7 +374,7 @@
                  {% endfor %}
                 {% else %}
                 <div>
-                  <h2>No result found. Please try again.</h2>
+                  <h2 class="text-center">No result found. Please try again.</h2>
                 </div>
                 {% endif %}
                 

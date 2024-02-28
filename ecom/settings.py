@@ -134,7 +134,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
@@ -164,5 +164,7 @@ EMAIL_HOST_PASSWORD = "ufwvokjzapixuxgk"
 
 # settings.py
 
-STRIPE_PUBLIC_KEY = 'pk_test_51OVv7aBWwkgDef7RG3WV0fgfgC31jrlG6hOB3Wgri1DkkNi9HJOjXT0IWWlEMibf6WfW2ysNBMp0PH8WIgupxfmB00avD4bmYN'
-STRIPE_SECRET_KEY = 'sk_test_51OVv7aBWwkgDef7RFDAF4MCWAGxHawRETysG3pwoNPPDazwcoTz2gmEa17b2MNcWN49jzCO5WYWnkCR1UiWw60qv00iFevAsBf'
+# STRIPE_PUBLIC_KEY = 'pk_test_51OVv7aBWwkgDef7RG3WV0fgfgC31jrlG6hOB3Wgri1DkkNi9HJOjXT0IWWlEMibf6WfW2ysNBMp0PH8WIgupxfmB00avD4bmYN'
+# STRIPE_SECRET_KEY = 'sk_test_51OVv7aBWwkgDef7RFDAF4MCWAGxHawRETysG3pwoNPPDazwcoTz2gmEa17b2MNcWN49jzCO5WYWnkCR1UiWw60qv00iFevAsBf'
+# import django_heroku
+# django_heroku.settings(locals())

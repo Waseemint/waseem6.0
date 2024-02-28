@@ -4,31 +4,153 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from store.models import Product
 from category.models import ChildCategory
-from carts.models import CartItem
+# from carts.models import CartItem
 from orders.models import OrderProduct
 from carts.views import _cart_id
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from customkit.models import CustomProduct, ProductGallery_Custom
+from carts.models import Cart, CartItem
+from customkit.models import CartItem_Custom, Cart_Custom
+from orders.models import Order
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
-
-
-def customkit(request, category_slug=None):
-    categories = None
-    products = None
-    if category_slug is not None:
-        categories = get_object_or_404(ChildCategory, slug=category_slug)
-        products = Product.objects.filter(category=categories, is_available=True)
-        paginator = Paginator(products, 8)
-        page = request.GET.get("page")
-        paged_products = paginator.get_page(page)
-        product_count = products.count()
-    else:
-        # mostra apenas produtos disponiveis e os ordena pelo id
-        products = Product.objects.all().filter(is_available=True).order_by("-id")
-        paginator = Paginator(products, 16)
-        page = request.GET.get("page")
-        paged_products = paginator.get_page(page)
-        product_count = products.count()
-    context = {"products": paged_products, "product_count": product_count}
+def customkit(request):
+    custom_products = CustomProduct.objects.all()
+    context = {
+        "custom_products":custom_products
+    }
     return render(request, "customkit/customkit.html", context)
+
+
+def custom_product_detail(request, product_slug):
+    try:
+        single_product = CustomProduct.objects.get(slug=product_slug)
+        in_cart = False  # Assuming no cart functionality for custom products
+    except CustomProduct.DoesNotExist:
+        return HttpResponse("Product not found", status=404)
+
+    # Product gallery
+    product_gallery = ProductGallery_Custom.objects.filter(product=single_product)
+
+    context = {
+        "single_product": single_product,
+        "in_cart": in_cart,
+        "product_gallery": product_gallery,
+    }
+    return render(request, "customkit/custom_product_detail.html", context)
+
+
+
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import CustomProduct
+# from .models import Cart_Custom, CartItem_Custom
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
+
+def _cart_id(request):  
+    cart = request.session.session_key
+    if not cart:
+        cart = request.session.create()
+    return cart
+
+@login_required
+def add_cart(request, product_id):  
+    current_user = request.user  
+    custom_product = CustomProduct.objects.get(id=product_id)  
+
+    if current_user.is_authenticated:
+        is_cart_item_exists = CartItem_Custom.objects.filter(custom_product=custom_product, user=current_user).exists()
+        if is_cart_item_exists:
+            cart_item = CartItem_Custom.objects.get(custom_product=custom_product, user=current_user)
+            cart_item.quantity += 1
+            cart_item.save()
+        else:
+            cart_item = CartItem_Custom.objects.create(custom_product=custom_product, quantity=1, user=current_user)
+    else:
+        try:
+            cart = Cart_Custom.objects.get(cart_id=_cart_id(request))
+        except Cart_Custom.DoesNotExist:
+            cart = Cart_Custom.objects.create(cart_id=_cart_id(request))
+        cart.save()
+        
+        is_cart_item_exists = CartItem_Custom.objects.filter(custom_product=custom_product, cart=cart).exists()
+        if is_cart_item_exists:
+            cart_item = CartItem_Custom.objects.get(custom_product=custom_product, cart=cart)
+            cart_item.quantity += 1
+            cart_item.save()
+        else:
+            cart_item = CartItem_Custom.objects.create(custom_product=custom_product, quantity=1, cart=cart)
+
+    return redirect('custom_cart')
+
+def remove_cart(request, product_id, cart_item_id):  
+    custom_product = get_object_or_404(CustomProduct, id=product_id)
+    try:
+        if request.user.is_authenticated:
+            cart_item = CartItem_Custom.objects.get(custom_product=custom_product, user=request.user, id=cart_item_id)
+        else:
+            cart = Cart_Custom.objects.get(cart_id=_cart_id(request))
+            cart_item = CartItem_Custom.objects.get(custom_product=custom_product, cart=cart, id=cart_item_id)
+        if cart_item.quantity > 1:
+            cart_item.quantity -= 1
+            cart_item.save()
+        else:
+            cart_item.delete()
+    except:
+        pass
+    return redirect('custom_cart')
+
+def remove_cart_item(request, product_id, cart_item_id):  
+    custom_product = get_object_or_404(CustomProduct, id=product_id)
+    if request.user.is_authenticated:
+        cart_item = CartItem_Custom.objects.get(custom_product=custom_product, user=request.user, id=cart_item_id)
+    else:
+        cart = Cart_Custom.objects.get(cart_id=_cart_id(request))
+        cart_item = CartItem_Custom.objects.get(custom_product=custom_product, cart=cart, id=cart_item_id)
+    cart_item.delete()
+    return redirect('custom_cart')
+
+def cart(request, total=0, quantity=0, cart_items=None):
+    try:
+        if request.user.is_authenticated:
+            cart_items = CartItem_Custom.objects.filter(user=request.user, is_active=True)
+        else:
+            cart = Cart_Custom.objects.get(cart_id=_cart_id(request))
+            cart_items = CartItem_Custom.objects.filter(cart=cart, is_active=True)
+        for cart_item in cart_items:
+            total += cart_item.custom_product.price * cart_item.quantity
+            quantity += cart_item.quantity
+    except ObjectDoesNotExist:
+        pass
+
+    context = {
+        'total': total,
+        'quantity': quantity,
+        'cart_items': cart_items,
+    }
+    return render(request, 'customkit/cart.html', context)
+
+@login_required(login_url='login')
+def checkout(request, total=0, quantity=0, cart_items=None):
+    try:
+        if request.user.is_authenticated:
+            cart_items = CartItem_Custom.objects.filter(user=request.user, is_active=True)
+        else:
+            cart = Cart_Custom.objects.get(cart_id=_cart_id(request))
+            cart_items = CartItem_Custom.objects.filter(cart=cart, is_active=True)
+        for cart_item in cart_items:
+            total += cart_item.custom_product.price * cart_item.quantity
+            quantity += cart_item.quantity
+    except ObjectDoesNotExist:
+        pass
+
+    context = {
+        'total': total,
+        'quantity': quantity,
+        'cart_items': cart_items,
+    }
+    return render(request, 'customkit/checkout.html', context)
