@@ -8,7 +8,9 @@ from store import urls as store_urls
 from carts import urls as carts_urls
 from orders import urls as orders_urls
 from customkit import urls as custom_urls
-
+from django.urls import re_path
+from django.conf import settings
+from django.views.static import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -18,6 +20,10 @@ urlpatterns = [
     path('cart/', include(carts_urls)),
     path('orders/', include(orders_urls)),
     path('create-your-own/', include(custom_urls)),
+
+    re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
+    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
+
 
 
 ]
