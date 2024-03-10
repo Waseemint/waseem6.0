@@ -63,7 +63,7 @@ MIDDLEWARE = [
 
 SESSION_EXPIRE_SECONDS = 36000
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
-SESSION_TIMEOUT_REDIRECT = "accounts/login"
+# SESSION_TIMEOUT_REDIRECT = "accounts/login"
 
 ROOT_URLCONF = 'ecom.urls'
 
@@ -151,10 +151,14 @@ if DEBUG:
     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-MEDIA_ROOT = [os.path.join(BASE_DIR, 'media')]
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+
+ADMINS = [
+    ('Wajahat Murtaza', 'wajahatmurtaza144@gmails.com'),
+    ('Admin 2 Admin', 'gomiman206@sfpixel.com'),
+]
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

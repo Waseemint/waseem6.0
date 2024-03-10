@@ -8,46 +8,9 @@
         <div class="row">
             <main class="col-md-9">
                 <div>
-                    <div class="graph">
-                        <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
-
-                        <script>
-                            // Function to update the chart
-                            function updateChart(xValues, yValues) {
-                                const chart = new Chart("myChart", {
-                                    type: "line",
-                                    data: {
-                                        labels: xValues,
-                                        datasets: [{
-                                            fill: false,
-                                            lineTension: 0,
-                                            backgroundColor: "rgba(0,0,255,1.0)",
-                                            borderColor: "rgba(0,0,255,0.1)",
-                                            data: yValues
-                                        }]
-                                    },
-                                    options: {
-                                        legend: {display: false},
-                                        scales: {
-                                            yAxes: [{ticks: {min: Math.min(...yValues), max: Math.max(...yValues)}}],
-                                        }
-                                    }
-                                });
-                            }
-                        
-                            // Update the chart when the page loads
-                            document.addEventListener('DOMContentLoaded', function() {
-                                updateChart({{ order_x_values|safe }}, {{ order_y_values|safe }});
-                            });
-                        </script>
-                        
-                    </div>
-                </div>
-                <br><br>
-                <div>
                     
                 <form action="{% url 'order_search' %}" method="get">
-                        <input type="search" name="q" class="" style="padding: 7px;border: 2px solid black;width: 89%;" placeholder="Search... Order NUmber #12-20-202...">
+                        <input type="search" name="q" class="" style="padding: 7px;border: 2px solid black;width: 89%;" value="{{query}}" placeholder="Search... Order NUmber #12-20-202...">
                         <button class="btn btn-primary" type="submit" style="border-radius: 0;outline: none;border: none;">Search</button>
                     </form>
                 </div>
@@ -72,7 +35,7 @@
                                     </thead>
                                     <tbody>
 
-                                        {% for order in orders %}
+                                        {% for order in results %}
                                         <tr>
                                             <th scope="row"><a href="{% url 'order_detail' order.order_number %}">
                                                     {{order.order_number }}</a>

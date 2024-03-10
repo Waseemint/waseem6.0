@@ -415,3 +415,17 @@ def account_search(request):
 
     context = {'results': results, 'query': query}
     return render(request, 'accounts/account_search.html', context)
+
+
+def order_search(request):
+    query = request.GET.get('q')
+    if query:
+        results = Order.objects.filter(
+            Q(order_number__icontains=query)
+
+        )
+    else:
+        results = Order.objects.all()
+    
+    context = {'results': results, 'query': query}
+    return render(request, 'accounts/order_search.html', context)

@@ -1,6 +1,19 @@
 from django.contrib import admin
-from customkit.models import CustomProduct, ProductGallery_Custom, Variation_Custom, CartItem_Custom, Cart_Custom
+from customkit.models import CustomProduct, ProductGallery_Custom, Variation_Custom, CartItem_Custom, Cart_Custom, CustomLogos
 import admin_thumbnails
+from django.utils.html import format_html
+
+
+class CustomLogosAdmin(admin.ModelAdmin):
+
+    def image_tag(self, obj):
+        return format_html('<img src="{}" style="max-width:50px; max-height:50px"/>'.format(obj.image.url))
+
+    list_display = ['image_tag',]
+
+admin.site.register(CustomLogos, CustomLogosAdmin)
+
+# admin.site.register(CustomLogos)
 
 @admin_thumbnails.thumbnail('image')
 class ProductGalleryInline(admin.TabularInline):

@@ -13,7 +13,7 @@ from carts.models import Cart, CartItem
 from customkit.models import CartItem_Custom, Cart_Custom
 from orders.models import Order
 from django.core.exceptions import ObjectDoesNotExist
-
+from customkit.models import CustomLogos
 # Create your views here.
 
 def customkit(request):
@@ -33,11 +33,12 @@ def custom_product_detail(request, product_slug):
 
     # Product gallery
     product_gallery = ProductGallery_Custom.objects.filter(product=single_product)
-
+    custom_logo = CustomLogos.objects.all().order_by('-id')
     context = {
         "single_product": single_product,
         "in_cart": in_cart,
         "product_gallery": product_gallery,
+        "custom_logo":custom_logo,
     }
     return render(request, "customkit/custom_product_detail.html", context)
 
@@ -154,3 +155,6 @@ def checkout(request, total=0, quantity=0, cart_items=None):
         'cart_items': cart_items,
     }
     return render(request, 'customkit/checkout.html', context)
+
+
+

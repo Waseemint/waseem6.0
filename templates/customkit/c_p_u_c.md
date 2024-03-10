@@ -10,17 +10,13 @@
 <meta name="author" content="">
 <meta name="keywords" content="MediaCenter, Template, eCommerce">
 <meta name="robots" content="all">
-<title>{% block title %}{{single_product.product_name}}{% endblock title %} - Tie</title>
-<link rel="shortcut icon" href="{% static 'assets/images/wlogo.png' %}" type="image/x-icon">
-
-
+<title>{% block title %}{% endblock title %} - Tie</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js" integrity="sha512-CeIsOAsgJnmevfCi2C7Zsyy6bQKi43utIjdA87Q0ZY84oDqnI0uwfM9+bKiIkI75lUeI00WG/+uJzOmuHlesMA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- Bootstrap Core CSS -->
 <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Lalezar&family=Madimi+One&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sora:wght@100..800&display=swap" rel="stylesheet">
-
 
 <!-- Customizable CSS -->
 <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
@@ -49,30 +45,22 @@
 
 
 <button type="button" id="toggle-menu-2" style="position: fixed;right: 0;z-index: 1000;padding: 10px;background: #fff;border: 1px solid black;width: 40px;"><i class="fa fa-bars"></i></button>
-<button id="toggle-menu-left-1" class="visible-xs hidden-md" type="button" id="" style="position: fixed;z-index: 1000;padding: 10px;background: #fff;border: 1px solid black;width: 40px;"><i class="fa fa-bars"></i></button>
 
 
     <div class="body-content outer-top-xs">
         <div class='container'>
             <div class='row single-product'>
-                <div class='col-xs-12 col-sm-12 col-md-3 sidebar' style="background: #fff;border-radius: 4px;">
+                <div class='col-xs-12 col-sm-12 col-md-3 sidebar'>
                     <div class="sidebar-module-container">
                    	
-                        <h3 class="text-center">Custom Design</h3>
-                        <p id="toggle-menu-left-2" class="text-center visible-xs hidden-md" style="background: #157ed2;color: #fff;padding: 5px;cursor: pointer;">Use Custom Desings</p>
+      
         
                         <div class="row g-0 hidden-xs">
-
-
-                            <div class="col-md-6 col-sm-6 col-6" style="margin-top: 10px;">
-
-                                <img class="img-responsive" style="cursor: pointer;height: 115px;width: 115px;border: 1px solid transparent;" src="{{single_product.images.url}}" onclick="replaceBackgroundImage(this.src)" alt="">
-                            </div>
                             {% for gallery_image in product_gallery %}
 
                             <div class="col-md-6 col-sm-6 col-6" style="margin-top: 10px;">
 
-                                <img class="img-responsive" style="height: 115px;width: 115px;border: 1px solid transparent;cursor: pointer;" src="{{gallery_image.image.url}}" onclick="replaceBackgroundImage(this.src)" alt="">
+                                <img class="img-responsive" style="height: 115px;width: 115px;border: 1px solid black;" src="{{gallery_image.image.url}}" alt="">
                             </div>
                             {% endfor %}
 
@@ -124,7 +112,10 @@
                                 <button title="Show Grid" id="toggleBtn" class="btn-cstm" type="button" onclick="toggleGrid()"><i id="gridIcon" class="fa fa-th"></i></button>
 
                                 
-                            
+                                <!-- <input type=""> -->
+                                <!-- <input type="range" id="gridSpacing" min="10" max="100" value="20" onchange="changeGridSpacing()"> -->
+                                <!-- <hr> -->
+                                <!-- Main product image -->
                                 <div id="owl-single-product">
                                     
                                     <div class="single-product-gallery-item" id="slide1">
@@ -132,6 +123,7 @@
                                         
                                         <canvas class="img-responsive main-product-image" id="canvas" width="280" height="400"></canvas>
   
+                                        <!-- <img class="img-responsive main-product-image" alt="" src="{{ single_product.images.url }}" /> -->
 
                                     </div>
                                 </div>
@@ -147,10 +139,9 @@ input[type=range]::-webkit-slider-thumb {
   cursor: pointer;
 }
 </style>
-                                                                                                                      
-<input style="-webkit-appearance: none;background-color: #ccc;border-radius: 0px;outline: none;color: black;" type="range" id="gridSpacing" min="10" max="100" value="20" onchange="changeGridSpacing()">
+                                                                                                                      <input style="-webkit-appearance: none;background-color: #ccc;border-radius: 0px;outline: none;color: black;" type="range" id="gridSpacing" min="10" max="100" value="20" onchange="changeGridSpacing()">
 
-<button onclick="downloadDesign()">DOwnload Design</button>
+
 
                                                                                                                       
                         
@@ -158,7 +149,7 @@ input[type=range]::-webkit-slider-thumb {
                         
                             </div>
                         </div>
-                        	<form  action="" method="POST">
+                        	<form  action="{% url 'custom_add_to_cart' single_product.id %}" method="POST">
                                 {% csrf_token %}
                         <div class='col-sm-12 col-md-8 col-lg-8 product-info-block'>
                             <div class="product-info">
@@ -319,7 +310,7 @@ input[type=range]::-webkit-slider-thumb {
                                                 <span class="price">Out of Stock</span>
                                                 {% else %}
                                                 <span class="price">PKR {{single_product.price}}</span>
-                                                
+                                                <span class="price-strike">$900.00</span>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -413,7 +404,7 @@ input[type=range]::-webkit-slider-thumb {
                                         </div>
     
                                         <div class="add-btn" style="margin-top: 15px;">
-                                            <button type="submit"  class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> Order Now</button>
+                                            <button type="submit"  class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</button>
                                         </div>
 
                                         <!-- Button trigger modal -->
@@ -633,8 +624,8 @@ input[type=range]::-webkit-slider-thumb {
         <!-- Your off-canvas content goes here -->
         <div class="row">
             {% for logo in custom_logo %}
-            <div class="col-md-6 col-sm-6 col-6">
-                <img src="{{logo.image.url}}"  onclick="addOverlayImage(this.src)" style="height: 115px;width: 115px;border-bottom: 1px solid transparent;"  class="img-responsive" alt="">
+            <div class="col-md-6">
+                <img src="{{logo.image.url}}" style="height: 115px;width: 115px;border-bottom: 1px solid black;"  class="img-responsive" alt="">
             </div>
             {% endfor %}
            
@@ -700,156 +691,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     <!-- ============================================== BRANDS CAROUSEL : END ============================================== -->	</div><!-- /.container -->
     </div><!-- /.body-content -->
-
-
-
-
-<style>
-    .offcanvas-left {
-    position: fixed;
-    top: 0;
-    left: -350px; /* Start off-canvas on the left side */
-    width: 275px; /* Width of off-canvas menu */
-    height: 100%;
-    background-color: #fff;
-    z-index: 1050;
-    transition: left 0.5s ease; /* Animation for transition */
-}
-
-.offcanvas-content-left {
-    padding: 20px;
-    overflow-y: auto; /* Enable vertical scrolling */
-    max-height: calc(100% - 80px); /* Set maximum height for content */
-}
-
-.offcanvas-content-left::-webkit-scrollbar {
-    width: 4px; /* Width of the scrollbar */
-}
-
-.offcanvas-content-left::-webkit-scrollbar-track {
-    background: transparent; /* Track color */
-}
-
-.offcanvas-content-left::-webkit-scrollbar-thumb {
-    background: #000; /* Thumb color */
-    border-radius: 0; /* Border radius */
-}
-
-.offcanvas-content-left::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Thumb color on hover */
-}
-
-.close-btn-left {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 34px;
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    z-index: 10000;
-}
-
-.overlay-left {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1040;
-    display: none;
-}
-
-</style>
-
-
-
-
-
-
-
-
-
-    <div id="offcanvas-menu-left" class="offcanvas-left">
-        <button id="close-menu-left" class="close-btn-left">&times;</button>
-        <div class="offcanvas-content-left">
-            <!-- Your off-canvas content goes here -->
-            <div class="row">
-
-
-
-                <div class="col-md-6 col-sm-6 col-6" >
-
-                    <img class="img-responsive" style="cursor: pointer;height: 115px;width: 115px;border: 1px solid transparent;" src="{{single_product.images.url}}" onclick="replaceBackgroundImage(this.src)" alt="">
-                </div>
-                {% for gallery_image in product_gallery %}
-
-                <div class="col-md-6 col-sm-6 col-6" >
-
-                    <img class="img-responsive" style="height: 115px;width: 115px;border: 1px solid transparent;cursor: pointer;" src="{{gallery_image.image.url}}" onclick="replaceBackgroundImage(this.src)" alt="">
-                </div>
-                {% endfor %}
-
-
-            </div>
-        </div>
-    </div>
-    
-    <div id="overlay-left" class="overlay-left"></div>
-
-    
-
-
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var toggleMenu1Btn = document.getElementById('toggle-menu-left-1');
-            var toggleMenu2Btn = document.getElementById('toggle-menu-left-2');
-            var closeMenuBtn = document.getElementById('close-menu-left');
-            var offcanvasMenu = document.getElementById('offcanvas-menu-left');
-            var overlay = document.getElementById('overlay-left');
-        
-            toggleMenu1Btn.addEventListener('click', function() {
-                toggleOffcanvasMenu();
-            });
-        
-            toggleMenu2Btn.addEventListener('click', function() {
-                toggleOffcanvasMenu();
-            });
-        
-            closeMenuBtn.addEventListener('click', function() {
-                offcanvasMenu.style.left = '-350px'; // Slide out the off-canvas menu
-                overlay.style.display = 'none';
-            });
-        
-            overlay.addEventListener('click', function() {
-                offcanvasMenu.style.left = '-350px'; // Slide out the off-canvas menu
-                overlay.style.display = 'none';
-            });
-        
-            function toggleOffcanvasMenu() {
-                var currentState = offcanvasMenu.style.left;
-                if (currentState === '0px' || currentState === '') {
-                    offcanvasMenu.style.left = '-350px'; // Slide out the off-canvas menu
-                    overlay.style.display = 'none';
-                } else {
-                    offcanvasMenu.style.left = '0'; // Slide in the off-canvas menu
-                    overlay.style.display = 'block';
-                }
-            }
-        });
-        </script>
-        
-
-
-
-
-
-
-
-
-
     
     <!-- ============================================================= FOOTER ============================================================= -->
     
@@ -880,10 +721,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+
+
 <script>
     var canvas = new fabric.Canvas('canvas');
-    // var backgroundImageUrl = `{{single_product.images.url}}`; 
-    // var backgroundImage; 
+    var backgroundImageUrl = `{{single_product.images.url}}`; 
+    var backgroundImage; 
     var selectedFont = 'Arial'; 
     var activeTextObject;
     var undoStack = [];
@@ -892,25 +736,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // var showGrid = true;
 
     // Function to add default background image
-   
-    function replaceBackgroundImage(imageUrl) {
-            fabric.Image.fromURL(imageUrl, function(img) {
-                img.scaleToWidth(canvas.width);
-                img.scaleToHeight(canvas.height);
-                canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
-            });
-        }
-
-        // Function to add default background image
-        function addDefaultBackgroundImage() {
-            var backgroundImageUrl = `{{single_product.images.url}}`; // Replace 'defaultImage.jpg' with the path to your default image
-            fabric.Image.fromURL(backgroundImageUrl, function(img) {
-                img.scaleToWidth(canvas.width);
-                img.scaleToHeight(canvas.height);
-                canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
-            });
-        }
-
+    function addDefaultBackgroundImage() {
+        fabric.Image.fromURL(backgroundImageUrl, function(img) {
+            img.scaleToWidth(canvas.width);
+            img.scaleToHeight(canvas.height);
+            canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+            backgroundImage = img;
+        });
+    }
 
     // Function to add text to canvas
     function addText() {
@@ -1132,40 +965,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById("colorPicker").value = "#000000";
         document.getElementById("fontSelect").value = "Arial";
     });
-
-
-    function addOverlayImage(imageUrl) {
-            fabric.Image.fromURL(imageUrl, function(img) {
-                img.set({
-                    left: 0,
-                    top: 0,
-                    scaleX: canvas.width / img.width,
-                    scaleY: canvas.height / img.height,
-                    selectable: true,
-                    opacity: 0.8 // Set overlay image opacity
-                });
-                canvas.add(img);
-                addToUndoStack();
-            });
-        }
-
-        function downloadDesign() {
-            var uniqueFilename = 'design_' + Date.now() + '.png';
-            var link = document.createElement('a');
-            link.download = uniqueFilename;
-            link.href = canvas.toDataURL({
-                format: 'png',
-                quality: 1
-            });
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-
-
-
-
 
     // Initialize canvas with default background image
     addDefaultBackgroundImage();

@@ -4,6 +4,19 @@ from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.conf import settings
 from accounts.models import Account
+from django.utils.html import mark_safe
+
+class CustomLogos(models.Model):
+    image = models.ImageField(upload_to="photos/custom_logos")
+
+    def img_preview(self): #new
+        return mark_safe(f'<img src = "{self.image.url}" width = "300"/>')
+    
+    def __str__(self):
+        return self.image.url
+    
+    
+
 
 class CustomProduct(models.Model):
     product_name = models.CharField(max_length=200)
@@ -94,3 +107,5 @@ class CartItem_Custom(models.Model):
 
     def __str__(self):
         return str(self.custom_product)
+    
+
