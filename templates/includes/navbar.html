@@ -150,32 +150,43 @@
                 <ul class="nav navbar-nav">
                   <li class="active dropdown"> <a href="{% url 'home' %}">Home</a> </li>
 
-                  <li class="dropdown yamm mega-menu">
-                    <a href="#" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">Categories</a>
-                    <ul class="dropdown-menu container">
-                        <li>
-                            <div class="yamm-content">
-                                <div class="row">
-                                    {% for parent_category in categories %}
-                                        <div class="col-xs-12 col-sm-6 col-md-2 col-menu">
-                                            <h2 class="title">{{ parent_category.name }}</h2>
-                                            <ul class="links">
-                                                {% for child_category in parent_category.childcategory_set.all %}
-                                                    <li><a href="{{child_category.get_url}}">{{ child_category.name }}</a></li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    {% endfor %}
-                                    
-                                    <!-- ... -->
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
+                 
                 
-                  
-                <li class=" dropdown"> <a href="{% url 'store' %}">Shop All</a> </li>
+             
+              
+
+
+              <!-- In base.html -->
+
+{% for main_category in main_categories %}
+<li class="dropdown yamm mega-menu">
+    <a href="#" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">{{ main_category.name }}</a>
+    <ul class="dropdown-menu container">
+        <li>
+            <div class="yamm-content">
+                <div class="row">
+                    {% for parent_category in main_category.parentcategory_set.all %}
+                    <div class="col-xs-12 col-sm-6 col-md-2 col-menu">
+                        <h2 class="title">{{ parent_category.name }}</h2>
+                        <ul class="links">
+                            {% for child_category in parent_category.childcategory_set.all %}
+                            <li><a href="{{ child_category.get_url }}">{{ child_category.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
+                    <!-- ... -->
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+{% endfor %}
+
+                
+                
+                
+                 <li class=" dropdown"> <a href="{% url 'store' %}">Shop All</a> </li>
                 <li class=" dropdown"> <a href="{% url 'customkit' %}">Create Your Own</a> </li>
 
                

@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-o8x581e+e#i@)w#i0tg(loir14s8(b7f936%)qcwt_4!p&r*&&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://waseem-int-d368a88e8f0a.herokuapp.com/', 'http://waseem-int-d368a88e8f0a.herokuapp.com/']
 
 
 # Application definition
@@ -78,8 +78,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                "category.context_processors.categories",
+                "category.context_processors.categories_processor",
                 "carts.context_processors.counter",
+                "store.context_processors.products",
 
             ],
         },
@@ -177,8 +178,3 @@ EMAIL_HOST_USER = "wajahatmurtaza144@gmail.com"
 EMAIL_HOST_PASSWORD = "ufwvokjzapixuxgk"
 
 # settings.py
-
-# STRIPE_PUBLIC_KEY = 'pk_test_51OVv7aBWwkgDef7RG3WV0fgfgC31jrlG6hOB3Wgri1DkkNi9HJOjXT0IWWlEMibf6WfW2ysNBMp0PH8WIgupxfmB00avD4bmYN'
-# STRIPE_SECRET_KEY = 'sk_test_51OVv7aBWwkgDef7RFDAF4MCWAGxHawRETysG3pwoNPPDazwcoTz2gmEa17b2MNcWN49jzCO5WYWnkCR1UiWw60qv00iFevAsBf'
-# import django_heroku
-# django_heroku.settings(locals())
