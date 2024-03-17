@@ -61,10 +61,10 @@
               <form action="{% url 'search' %}" method="GET">
                 <div class="control-group">
                   <ul class="categories-filter animate-dropdown">
-                    <li class="dropdown"> <a class="dropdown-toggle"  data-toggle="dropdown" href="category.html">Categories <b class="caret"></b></a>
+                    <li class="dropdown"> <a class="dropdown-toggle"  data-toggle="dropdown" href="">Categories <b class="caret"></b></a>
                       <ul class="dropdown-menu" role="menu" >
                         <li class="menu-header">All</li>
-                        {% for parent in categories %}
+                        {% for parent in main_categories %}
                         <li role="presentation"><a role="menuitem" tabindex="-1" >- {{parent.name}}</a></li>
                         {% endfor %}
                         </ul>

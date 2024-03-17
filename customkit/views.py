@@ -10,11 +10,14 @@ from carts.views import _cart_id
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from customkit.models import CustomProduct, ProductGallery_Custom
 from carts.models import Cart, CartItem
-from customkit.models import CartItem_Custom, Cart_Custom
+from customkit.models import CartItem_Custom, Cart_Custom,CustomOrder
 from orders.models import Order
 from django.core.exceptions import ObjectDoesNotExist
 from customkit.models import CustomLogos
+from customkit.forms import CustomOrderForm
+from django.http import JsonResponse
 # Create your views here.
+
 
 def customkit(request):
     custom_products = CustomProduct.objects.all()
@@ -157,4 +160,92 @@ def checkout(request, total=0, quantity=0, cart_items=None):
     return render(request, 'customkit/checkout.html', context)
 
 
+# def order_product(request, product_slug):
+#     product = get_object_or_404(CustomProduct, slug=product_slug)
+#     if request.method == 'POST':
+#         form = CustomOrderForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             order = form.save(commit=False)
+#             order.product = product
+#             order.user = request.user # Assuming the user is logged in
+#             order.save()
+#             return redirect('order_confirmation', order_id=order.id) # Redirect to a confirmation page
+#         else:
+#             # If the form is not valid, calculate the total price based on the submitted quantity
+#             quantity = form.cleaned_data.get('quantity', 1) # Default to 1 if quantity is not submitted
+#             total_price = product.price * quantity
+#     else:
+#         form = CustomOrderForm()
+#         total_price = product.price # Default total price when the form is first displayed
 
+#     return render(request, 'customkit/order_form.html', {'form': form, 'product': product, 'total_price': total_price})
+
+
+
+def order_product(request, product_slug):
+    product = get_object_or_404(CustomProduct, slug=product_slug)
+    if request.method == 'POST':
+        form = CustomOrderForm(request.POST, request.FILES)
+        if form.is_valid():
+            quantity = form.cleaned_data.get('quantity')
+            if quantity <= 0:
+                # If quantity is 0 or less, add an error to the form
+                form.add_error('quantity', 'Quantity must be 1 or greater.')
+            else:
+                order = form.save(commit=False)
+                order.product = product
+                order.user = request.user # Assuming the user is logged in
+                order.save()
+                return redirect('order_confirmation', order_id=order.id) # Redirect to a confirmation page
+    else:
+        form = CustomOrderForm()
+
+    return render(request, 'customkit/order_form.html', {'form': form, 'product': product})
+
+
+def order_confirmation(request, order_id):
+    order = get_object_or_404(CustomOrder, id=order_id)
+    context = {
+        'order': order,
+        'order_id': order.id,
+        'total_price': order.order_total,
+        'quantity': order.quantity,
+        'address': order.full_address(),
+        'name': order.full_name(),
+        # Add any other details you want to display
+    }
+    return render(request, 'customkit/order_confirmation.html', context)
+
+
+# from decimal import Decimal
+
+
+# def calculate_total_price(request):
+#     product_id = request.GET.get('product_id')
+#     quantity = request.GET.get('quantity')
+#     product = CustomProduct.objects.get(id=product_id)
+#     total_price = product.price * int(quantity)
+#     tax_rate = Decimal('0.02') # Convert the tax rate to Decimal
+#     tax = total_price * tax_rate
+#     total_amount_with_tax = total_price + tax
+#     return JsonResponse({
+#         'total_price': total_price,
+#         'tax': tax,
+#         'total_amount_with_tax': total_amount_with_tax
+#     })
+
+from decimal import Decimal
+
+def calculate_total_price(request):
+    product_id = request.GET.get('product_id')
+    quantity = request.GET.get('quantity')
+    product = CustomProduct.objects.get(id=product_id)
+    total_price = product.price * int(quantity)
+    tax_rate = Decimal('0.02') # Tax rate as a Decimal
+    tax = total_price * tax_rate
+    total_amount_with_tax = total_price + tax
+    return JsonResponse({
+        'total_price': total_price,
+        'tax': tax,
+        'total_amount_with_tax': total_amount_with_tax
+    })

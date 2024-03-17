@@ -5,6 +5,10 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from accounts.models import Account
 from django.utils.html import mark_safe
+from store.models import Product
+from django.utils import timezone
+from decimal import Decimal
+import uuid
 
 class CustomLogos(models.Model):
     image = models.ImageField(upload_to="photos/custom_logos")
@@ -32,6 +36,9 @@ class CustomProduct(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
+    def get_order_url(self):
+        return reverse('order_product', args=[self.slug])
+    
     def save(self, *args, **kwargs):
         # Generate slug before saving
         if not self.slug:
@@ -107,5 +114,64 @@ class CartItem_Custom(models.Model):
 
     def __str__(self):
         return str(self.custom_product)
+    
+
+
+class CustomOrder(models.Model):
+    STATUS = (
+        ("New", "New"),
+        ("Accepted", "Accepted"),
+        ("Completed", "Completed"),
+        ("Cancelled", "Cancelled"),
+    )
+    user = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(CustomProduct, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    stuff = models.FileField(upload_to='custom_stuff', max_length = 100)
+    order_number = models.CharField(max_length=255, unique=True, blank=True, null=True)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    phone = models.CharField(max_length=15)
+    email = models.EmailField(max_length=50)
+    address_line_1 = models.CharField(max_length=50)
+    address_line_2 = models.CharField(max_length=50, blank=True)
+    country = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    order_note = models.CharField(max_length=100, blank=True)
+    order_total = models.FloatField()
+    tax = models.FloatField()
+    status = models.CharField(max_length=10, choices=STATUS, default="New")
+    ip = models.CharField(max_length=20, blank=True)
+    is_ordered = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+    def full_address(self):
+        return f"{self.address_line_1} {self.address_line_2}"
+    
+    def calculate_total_price(self):
+        # Assuming the product price is stored in the CustomProduct model
+        # and is accessible via the product field in the CustomOrder model
+        total_price = self.product.price * self.quantity
+        return total_price
+    
+    def save(self, *args, **kwargs):
+        if not self.order_number:
+            self.order_number = f"{timezone.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:8]}"
+        # Convert the tax rate to Decimal to ensure compatibility with the price field
+        tax_rate = Decimal('0.02')
+        # Calculate the tax and order total using Decimal for precision
+        self.tax = self.product.price * tax_rate * self.quantity
+        self.order_total = self.product.price * self.quantity + self.tax
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.order_number
+
+
     
 

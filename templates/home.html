@@ -419,12 +419,13 @@
     <div class="col-lg-3">
       <h3 class="section-title">Products</h3>
       <ul class="sub-cat">
-        {% for parent_category in categories %}
-          {% for child_category in parent_category.childcategory_set.all %}
-            <li><a href="{{child_category.get_url}}">{{child_category.name}}</a></li>
-          {% endfor %}
+        {% for main_category in main_categories %}
+        {% for parent_category in main_category.parentcategory_set.all %}
+            {% for child_category in parent_category.childcategory_set.all %}
+                <li><a href="{{ child_category.get_url }}">{{ child_category.name }}</a></li>
+            {% endfor %}
         {% endfor %}
-     
+    {% endfor %}
       </ul>
       </div>
       <div class="col-lg-9">

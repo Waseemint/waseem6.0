@@ -5,9 +5,12 @@
 	{% include 'includes/alerts.html' %}
 	<div class="container">
 		<div class="row">
-			<main class="col-md-9">
+			<main class="col-md-12">
 				<article class="card">
-					
+					<header class="card-header" style="padding: 8px;margin-bottom: 10px;">
+                        <strong class="d-inline-block mr-3">Logged in as :  {{user.full_name}}</strong>
+                        
+                    </header>
 					<div class="card-body">
 						<div class="row">
 							<div class="col-md-6">

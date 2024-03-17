@@ -19,7 +19,17 @@
                     </form>
                 </div>
                    <div class="col-md-6">
-                    <div style="display: flex;justify-content: end;">
+                    <style>
+                        .download_excel{
+                            display: flex;justify-content: end;
+                        }
+                        @media (max-width:480px) {
+                            .download_excel{
+                                display: flex;justify-content: center;margin-top: 10px;
+                            }
+                        }
+                    </style>
+                    <div class="download_excel">
                         <a href="{% url 'download_excel' %}" id="" class="btn btn-primary">
                             Download All
                         </a>
@@ -53,11 +63,13 @@
                </div>
                <br>
                 <article class="card">
-                    <header class="card-header">
+                    <header class="card-header" style="padding: 8px;">
                         <strong class="d-inline-block mr-3">Your Customers:</strong>
                         
                     </header>
                     <div class="card-body">
+                        <div class="table-responsive">
+
                         <div class="row">
                             <div class="col-md-12">
                                 <table class="table table-hover">
@@ -102,6 +114,7 @@
                                 </table>
                             </div>
                         </div> <!-- row.// -->
+                        </div>
                     </div> <!-- card-body .// -->
                 </article> <!-- order-group.// -->
             </main>

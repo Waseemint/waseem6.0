@@ -10,5 +10,10 @@ urlpatterns = [
     path('custom_remove-cart-item/<int:product_id>/<int:cart_item_id>/', views.remove_cart_item, name='custom_remove_cart_item'),
     path('custom_cart/', views.cart, name='custom_cart'),
     path('custom_checkout/', views.checkout, name='custom_checkout'),
+
+    path('order/<slug:product_slug>/', views.order_product, name='order_product'),
+    path('order/confirmation/<int:order_id>/', views.order_confirmation, name='order_confirmation'),
+    path('calculate_total_price/', views.calculate_total_price, name='calculate_total_price'),
+
 ]
     

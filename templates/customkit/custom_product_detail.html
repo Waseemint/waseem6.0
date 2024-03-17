@@ -411,9 +411,29 @@ input[type=range]::-webkit-slider-thumb {
                                               </div>
                                             </div>
                                         </div>
-    
+                                        
+                                        <div style="background-color: #00000000;">
+                                            <ol>
+                                                <li>Desing Your Shirts by Using Built-in-Tools</li>
+                                                <li>Click on Download Button</li>
+                                                <li>Click Order Now</li>
+                                            </ol>
+                                        </div>
+
+                                        <style>
+                                            .dbcs{
+                                                background: transparent !important;
+                                                border: 1px solid #fdd922 !important;
+                                            }
+                                            .dbcs:hover{
+                                                background: #fdd922 !important;
+                                            }
+                                        </style>
+                                       
+                                       
                                         <div class="add-btn" style="margin-top: 15px;">
-                                            <button type="submit"  class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> Order Now</button>
+                                            <a  href="" class="btn btn-primary dbcs">Download Now</a>
+                                            <a  href="{% url 'order_product' single_product.slug %}" class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> Order Now</a>
                                         </div>
 
                                         <!-- Button trigger modal -->

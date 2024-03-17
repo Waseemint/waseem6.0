@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-o8x581e+e#i@)w#i0tg(loir14s8(b7f936%)qcwt_4!p&r*&&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://waseem-int-d368a88e8f0a.herokuapp.com/', 'http://waseem-int-d368a88e8f0a.herokuapp.com/']
+ALLOWED_HOSTS = ['https://waseemint.com/','waseemint.com','waseem-int-d368a88e8f0a.herokuapp.com','www.waseemint.com','127.0.0.1']
 
 
 # Application definition
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'carts',
     'orders',
     'customkit',
+    'images',
     
     'widget_tweaks',
 

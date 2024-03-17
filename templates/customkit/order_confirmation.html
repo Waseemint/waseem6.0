@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="order-confirmation">
+    <h2>Order Confirmation</h2>
+    <p>Order ID: {{ order_id }}</p>
+    <p>Total Price: {{ total_price }}</p>
+    <p>Quantity: {{ quantity }}</p>
+    <p>Address: {{ address }}</p>
+    <p>Name: {{ name }}</p>
+
+    <p>Product: {{ order.product.product_name }}</p>
+    <p>Quantity: {{ order.quantity }}</p>
+    <p>Tax: {{ order.tax }}</p>
+    <p>Total Price: {{ order.order_total }}</p>
+    <!-- Display any other details here -->
+</div>
+
+{% endblock content %}
