@@ -12,7 +12,7 @@ urlpatterns = [
     path('custom_checkout/', views.checkout, name='custom_checkout'),
 
     path('order/<slug:product_slug>/', views.order_product, name='order_product'),
-    path('order/confirmation/<int:order_id>/', views.order_confirmation, name='order_confirmation'),
+    path('order/confirmation/<slug:order_number>/', views.order_confirmation, name='order_confirmation'),
     path('calculate_total_price/', views.calculate_total_price, name='calculate_total_price'),
 
 ]

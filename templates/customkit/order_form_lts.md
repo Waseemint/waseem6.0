@@ -109,13 +109,14 @@
                         <div class="form-row">
                             <div class="col-md-6 form-group">
                                 <label for="">Quantity</label>
-								<!-- {{form.quantity}} -->
-                                {% render_field form.quantity type="number" placeholder="Quantity" class="form-control" required="" min="1" %}
-                                <!-- <p><input type="number" style="display: none;" id="id_quantity" name="quantity" value="0" min="0"></p> -->
+								{{form.quantity}}
+                                <!-- {% render_field form.quantity type="number" placeholder="Quantity" class="form-control" required="" %} -->
+                                <p><input type="number" style="display: none;" id="id_quantity" name="quantity" value="0" min="0"></p>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="">Upload Desing (.zip File)</label>
-								{% render_field form.stuff type="file"  id="zipFileInput" accept=".zip" onchange="validateFileType(this)" class="form-control" required="" %}
+								{{form.stuff}}
+                                <!-- {% render_field form.stuff type="file"  id="zipFileInput" accept=".zip" onchange="validateFileType(this)" class="form-control" required="" %} -->
                                 <script>
                                     function validateFileType(input) {
                                         const allowedExtensions = ['zip'];
@@ -310,13 +311,13 @@ $(document).ready(function() {
         });
     });
 
-    // $('form').submit(function(e) {
-    //     var quantity = $('#id_quantity').val();
-    //     if (quantity <= 0) {
-    //         alert('Quantity must be 1 or greater.');
-    //         e.preventDefault(); 
-    //     }
-    // });
+    $('form').submit(function(e) {
+        var quantity = $('#id_quantity').val();
+        if (quantity <= 0) {
+            alert('Quantity must be 1 or greater.');
+            e.preventDefault(); 
+        }
+    });
 });
 
 

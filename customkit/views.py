@@ -16,6 +16,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from customkit.models import CustomLogos
 from customkit.forms import CustomOrderForm
 from django.http import JsonResponse
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 # Create your views here.
 
 
@@ -182,6 +185,69 @@ def checkout(request, total=0, quantity=0, cart_items=None):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# @login_required(login_url='login')
+# def order_product(request, product_slug):
+#     product = get_object_or_404(CustomProduct, slug=product_slug)
+#     if request.method == 'POST':
+#         form = CustomOrderForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             quantity = form.cleaned_data.get('quantity')
+#             if quantity <= 0:
+#                 # If quantity is 0 or less, add an error to the form
+#                 form.add_error('quantity', 'Quantity must be 1 or greater.')
+#             else:
+#                 order = form.save(commit=False)
+#                 order.product = product
+#                 order.user = request.user # Assuming the user is logged in
+#                 order.save()
+#                 return redirect('order_confirmation', order_number=order.order_number)
+
+#     else:
+#         form = CustomOrderForm()
+
+#     return render(request, 'customkit/order_form.html', {'form': form, 'product': product})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@login_required(login_url='login')
 def order_product(request, product_slug):
     product = get_object_or_404(CustomProduct, slug=product_slug)
     if request.method == 'POST':
@@ -189,22 +255,45 @@ def order_product(request, product_slug):
         if form.is_valid():
             quantity = form.cleaned_data.get('quantity')
             if quantity <= 0:
-                # If quantity is 0 or less, add an error to the form
                 form.add_error('quantity', 'Quantity must be 1 or greater.')
             else:
                 order = form.save(commit=False)
                 order.product = product
-                order.user = request.user # Assuming the user is logged in
+                order.user = request.user
                 order.save()
-                return redirect('order_confirmation', order_id=order.id) # Redirect to a confirmation page
+
+                user_subject = 'Order Confirmation'
+                user_message = render_to_string('emails/order_confirmation.html', {'order': order})
+                user_email = request.user.email
+                send_mail(user_subject, strip_tags(user_message), None, [user_email], html_message=user_message)
+
+                admin_subject = 'New Order Placed'
+                admin_message = render_to_string('emails/new_order_notification.html', {'order': order})
+                admin_email = 'waseemint.pk@gmail.com'
+                send_mail(admin_subject, strip_tags(admin_message), None, [admin_email], html_message=admin_message)
+
+                return redirect('order_confirmation', order_number=order.order_number)
+
     else:
         form = CustomOrderForm()
 
     return render(request, 'customkit/order_form.html', {'form': form, 'product': product})
 
 
-def order_confirmation(request, order_id):
-    order = get_object_or_404(CustomOrder, id=order_id)
+
+
+
+
+
+
+
+
+
+
+@login_required(login_url='login')
+def order_confirmation(request, order_number):
+    order = get_object_or_404(CustomOrder, order_number=order_number)
+    subtotal = order.order_total - order.tax
     context = {
         'order': order,
         'order_id': order.id,
@@ -212,6 +301,10 @@ def order_confirmation(request, order_id):
         'quantity': order.quantity,
         'address': order.full_address(),
         'name': order.full_name(),
+        'order_number':order.order_number,
+        'product_name': order.product.product_name,
+        'product_price':order.product.price,
+        'subtotal':subtotal,
         # Add any other details you want to display
     }
     return render(request, 'customkit/order_confirmation.html', context)

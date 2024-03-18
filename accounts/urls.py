@@ -16,6 +16,9 @@ from .views import view_all_users_to_admin
 from .views import download_excel
 from .views import account_search
 from .views import order_search
+from .views import view_all_custom_orders_to_admin
+from .views import custom_order_search
+from .views import my_custom_orders
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -41,5 +44,7 @@ urlpatterns = [
     path('download-excel/', download_excel, name='download_excel'),
     path('account-search/', account_search, name='account_search'),
     path('order-search/', order_search, name='order_search'),
-
+    path('view_all_custom_orders_to_admin/', view_all_custom_orders_to_admin, name='view_all_custom_orders_to_admin'),
+    path("custom-order-search/", custom_order_search, name="custom_order_search"),
+    path("my_custom_orders/", my_custom_orders, name="my_custom_orders"),
 ]

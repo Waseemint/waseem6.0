@@ -12,6 +12,9 @@ from .forms import OrderForm
 from .models import Order, OrderProduct,Payment
 from store.models import Product
 
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 import stripe
 
 # def payments(request):
@@ -177,22 +180,30 @@ def place_order(request, total=0, quantity=0):
             send_email.attach_alternative(message, "text/html")
             send_email.send()
             
+
+
+            admin_subject = 'New Order Placed'
+            admin_message = render_to_string('emails/new_order_notification_two.html', {'order': order})
+            admin_email = 'waseemint.pk@gmail.com'
+            send_mail(admin_subject, strip_tags(admin_message), None, [admin_email], html_message=admin_message)
+
+
             # enviar email para o admin
-            admin_subject = f"New Order Placed: {order_number}"
-            admin_message = f"New Order Placed:\n\nOrder Number: {order_number}\n\nOrder Details:\n\n"
-            for item in ordered_products:
-                admin_message += f"Product: {item.product.product_name}\nQuantity: {item.quantity}\n\n"
-            admin_message += f"Total Price: {grand_total}\n\n"
-            admin_message += "Customer Information:\n"
-            admin_message += f"Name: {order.first_name} {order.last_name}\n"
-            admin_message += f"Email: {order.email}\n"
-            admin_message += f"Phone: {order.phone}\n"
-            admin_message += f"Address: {order.address_line_1}, {order.address_line_2}, {order.city}, {order.state}, {order.country}\n\n"
-            admin_message += "Order Note: \n"
-            admin_message += f"{order.order_note}\n\n"
-            admin_message += "Thank you.\n"
+            # admin_subject = f"New Order Placed: {order_number}"
+            # admin_message = f"New Order Placed:\n\nOrder Number: {order_number}\n\nOrder Details:\n\n"
+            # for item in ordered_products:
+            #     admin_message += f"Product: {item.product.product_name}\nQuantity: {item.quantity}\n\n"
+            # admin_message += f"Total Price: {grand_total}\n\n"
+            # admin_message += "Customer Information:\n"
+            # admin_message += f"Name: {order.first_name} {order.last_name}\n"
+            # admin_message += f"Email: {order.email}\n"
+            # admin_message += f"Phone: {order.phone}\n"
+            # admin_message += f"Address: {order.address_line_1}, {order.address_line_2}, {order.city}, {order.state}, {order.country}\n\n"
+            # admin_message += "Order Note: \n"
+            # admin_message += f"{order.order_note}\n\n"
+            # admin_message += "Thank you.\n"
             
-            mail_admins(admin_subject, admin_message)
+            # mail_admins(admin_subject, admin_message)
             
 
             context = {

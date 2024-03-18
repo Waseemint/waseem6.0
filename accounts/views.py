@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 import requests
-
+from customkit.models import CustomOrder
 from .forms import RegistrationForm, UserForm
 from .models import Account
 from carts.models import Cart, CartItem
@@ -234,6 +234,18 @@ def my_orders(request):
     return render(request, "accounts/my_orders.html", context)
 
 
+
+@login_required(login_url="login")
+def my_custom_orders(request):
+    orders = CustomOrder.objects.filter(user=request.user, is_ordered=False).order_by(
+        "-created_at"
+    )
+    context = {
+        "orders": orders,
+    }
+    return render(request, "accounts/my_custom_orders.html", context)
+
+
 @login_required(login_url="login")
 def edit_profile(request):
     if request.method == "POST":
@@ -350,8 +362,22 @@ def view_all_users_to_admin(request):
         return render(request, "accounts/view_all_customers_to_admin.html", context)
     else:
         return redirect('dashboard')
-    
 
+
+@login_required(login_url="login")
+def view_all_custom_orders_to_admin(request):
+    user = request.user
+    orders = CustomOrder.objects.all().order_by('-id')
+
+
+    context = {
+        "orders": orders
+    }
+
+    if user.is_admin:
+        return render(request, "accounts/view_all_custom_orders_to_admin.html", context)
+    else:
+        return redirect('dashboard')
 
 
 # views.py
@@ -429,3 +455,17 @@ def order_search(request):
     
     context = {'results': results, 'query': query}
     return render(request, 'accounts/order_search.html', context)
+
+
+def custom_order_search(request):
+    query = request.GET.get('q')
+    if query:
+        results = CustomOrder.objects.filter(
+            Q(order_number__icontains=query)
+
+        )
+    else:
+        results = Order.objects.all()
+    
+    context = {'results': results, 'query': query}
+    return render(request, 'accounts/custom_order_search.html', context)
