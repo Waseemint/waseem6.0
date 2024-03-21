@@ -41,7 +41,11 @@ class Account(AbstractBaseUser):
     email = models.EmailField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=50)
     profile_picture = models.ImageField(upload_to="profile_pics/", default="user.png")
+    # city = models.CharField(max_length=255, blank=True, null=True)
+    # shop_name = models.CharField(max_length=255, blank=True, null=True, default="None")
     # add another fields here if required
+
+
 
     # required
     date_joined = models.DateTimeField(auto_now_add=True)

@@ -1,8 +1,8 @@
 import os
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-o8x581e+e#i@)w#i0tg(loir14s8(b7f936%)qcwt_4!p&r*&&'
-DEBUG = True
+SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG = False
 ALLOWED_HOSTS = ['https://waseemint.com/','waseemint.com','waseem-int-d368a88e8f0a.herokuapp.com','www.waseemint.com','127.0.0.1']
 
 INSTALLED_APPS = [
@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'orders',
     'customkit',
     'images',
+    'youtube',
     
     'widget_tweaks',
 
@@ -66,12 +67,16 @@ WSGI_APPLICATION = 'ecom.wsgi.application'
 AUTH_USER_MODEL = "accounts.Account"
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = { 
+    'default': { 
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', 
+        'NAME': os.environ.get('NAME'), 
+        'USER': os.environ.get('USER'), 
+        'PASSWORD': os.environ.get('DB_PASSWORD'), 
+        'HOST': os.environ.get('HOST'), 
+        'PORT': '5432', 
+    } 
+} 
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -116,16 +121,12 @@ from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.ERROR: "danger",
 }
-DEFAULT_FROM_EMAIL = 'waseemint.pk@gmail.com'
+# DEFAULT_EMAIL
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_EMAIL')
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "waseemint.pk@gmail.com"
-EMAIL_HOST_PASSWORD = "hoszcfqkzmteolof"
+EMAIL_HOST_USER = os.environ.get('DEFAULT_EMAIL')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
-# EMAIL_HOST_USER = "wajahatmurtaza144@gmail.com"
-# EMAIL_HOST_PASSWORD = "ufwvokjzapixuxgk"
-# waseemint.pk@gmail.com
-# hosz cfqk zmte olof
-# settings.py

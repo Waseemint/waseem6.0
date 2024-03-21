@@ -124,8 +124,15 @@ class CustomOrder(models.Model):
         ("Completed", "Completed"),
         ("Cancelled", "Cancelled"),
     )
+    SIZES = (
+        ("S","S"),
+        ("M","M"),
+        ("L","L"),
+        ("XL","XL"),
+    )
     user = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
     product = models.ForeignKey(CustomProduct, on_delete=models.CASCADE)
+    sizes = models.CharField(max_length=10, choices=SIZES, default="S")
     quantity = models.IntegerField(default=1)
     stuff = models.FileField(upload_to='custom_stuff', max_length = 100)
     order_number = models.CharField(max_length=255, unique=True, blank=True, null=True)

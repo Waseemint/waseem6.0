@@ -51,7 +51,11 @@
                         <tr>
                           <td>
                             <a href="{% url 'custom_product_detail' order.product.slug %}">{{ product_name }}</a>
-                            <p class="text-muted small"></p>
+                            <p class="text-muted small">
+                              <b>Size:</b> {{order.sizes}}
+                              <br>
+                              <b>Quantity:</b> x{{order.quantity}}
+                            </p>
                           </td>
                           <td class="text-center">{{ order.quantity }}</td>
                           <td class="text-center">{{ product_price }} PKR</td>

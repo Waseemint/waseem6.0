@@ -8,6 +8,7 @@ class CustomOrderForm(forms.ModelForm):
         fields = [
             'quantity',
             'stuff',
+            'sizes',
             'order_number',
             'first_name',
             'last_name',

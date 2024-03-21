@@ -101,19 +101,22 @@
                 <div class="col-md-12 col-sm-12">
                     <h4 class="checkout-subtitle">Order Details</h4>
                     <div class="row">
-                        <div class="col-md-12">
-                            <ul style="margin-bottom: 5px;">
-                                <li>Upload the <b>Zip Design</b>  that you Download From Previous Page</li>
-                            </ul>
-                        </div>
+                      
                         <div class="form-row">
                             <div class="col-md-6 form-group">
                                 <label for="">Quantity</label>
-								<!-- {{form.quantity}} -->
                                 {% render_field form.quantity type="number" placeholder="Quantity" class="form-control" required="" min="1" %}
-                                <!-- <p><input type="number" style="display: none;" id="id_quantity" name="quantity" value="0" min="0"></p> -->
                             </div>
-                            <div class="col-md-6 form-group">
+							<div class="col-md-6 form-group">
+                                <label for="">Select Size</label>
+                                {% render_field form.sizes type="number" placeholder="Quantity" class="form-control" required="" min="1" %}
+                            </div>
+							<div class="col-md-12">
+								<ul style="margin-bottom: 5px;">
+									<li>Upload the <b>Zip Design</b>  that you Download From Previous Page</li>
+								</ul>
+							</div>
+                            <div class="col-md-12 form-group">
                                 <label for="">Upload Desing (.zip File)</label>
 								{% render_field form.stuff type="file"  id="zipFileInput" accept=".zip" onchange="validateFileType(this)" class="form-control" required="" %}
                                 <script>
@@ -238,11 +241,57 @@
 						<hr>
 						
 						<li>
-							<button type="submit" class="btn btn-primary">
-								Place Order
-							  </button>
+							<div class="text-center">
+							
+
 							  
-							  <!-- Modal -->
+
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+								  <i class="fa fa-institution"></i> Pay Now
+								  </button>
+
+
+								  <button type="submit"  style="margin-top: 10px;" class="btn btn-primary">
+									  <i class="fa fa-money"></i> Cash On Delivery
+									</button>
+							  </div>
+							
+							<!-- Modal -->
+							<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							  <div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+								  <div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Check Out</h5>
+								   
+								  </div>
+								  <div class="modal-body" style="display: flex;justify-content: center;align-items: center;">
+									  <div style="text-align: center;">
+										  
+										  <div>
+											  <h4>Bank Details: </h4>
+											  <h5>Name: WASEEM INTERNATIONAL</h5>
+											  <h5>Bank Name: Meezan Bank-Liaqat Abad Branch - Faisalabad</h5>
+											  <h5>Account Number: 04300109456940</h5>
+											  <h5>IBAN: PK97MEZN0004300109456940</h5>
+											  
+											  <a href="https://wa.me/923016543034" style="font-size: 18px;" target="_blank"><i class="fa fa-whatsapp"></i> Send Payment Receipt</a>
+											  <p>Sent Money in Our Bank Account and Sent Us Invoice in Our Whatsapp Number</p>
+											  
+											  <button type="submit" class="btn btn-primary"> <i class='fa fa-thumbs-o-up fa-lg'></i> Payment Done</button>
+										  </div>	
+										  <div>
+											  <p class="" style="color: red;"> <b> Note! </b>COD is not available Out of Pakistan!</p>
+										  </div>
+									  </div>
+
+								  </div>
+								  <div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+								  </div>
+								</div>
+							  </div>
+							</div>
 							
 								
 						</li>

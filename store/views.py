@@ -8,6 +8,7 @@ from carts.models import CartItem
 from orders.models import OrderProduct
 from carts.views import _cart_id
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from store.models import ClothingSizePants, ClothingSizeShirts
 
 
 def store(request, category_slug=None):
@@ -59,6 +60,11 @@ def product_detail(request, category_slug, product_slug):
     product_gallery = ProductGallery.objects.filter(product_id=single_product.id)
 
     product_all = Product.objects.all()
+    colors = single_product.variation_set.colors()
+    sizes = single_product.variation_set.sizes()
+    pant_size = ClothingSizePants.objects.all()
+    shirt_size = ClothingSizeShirts.objects.all()
+
 
     context = {
         "single_product": single_product,
@@ -67,6 +73,10 @@ def product_detail(request, category_slug, product_slug):
         "reviews": reviews,
         "product_gallery": product_gallery,
         "product_all":product_all,
+        'colors':colors,
+        'sizes':sizes,
+        'pant_size':pant_size,
+        'shirt_size':shirt_size,
     }
     return render(request, "store/product_detail.html", context)
 

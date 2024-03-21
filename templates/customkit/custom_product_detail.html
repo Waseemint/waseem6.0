@@ -150,8 +150,6 @@ input[type=range]::-webkit-slider-thumb {
                                                                                                                       
 <input style="-webkit-appearance: none;background-color: #ccc;border-radius: 0px;outline: none;color: black;" type="range" id="gridSpacing" min="10" max="100" value="20" onchange="changeGridSpacing()">
 
-<button onclick="downloadDesign()">DOwnload Design</button>
-
                                                                                                                       
                         
                                
@@ -304,7 +302,7 @@ input[type=range]::-webkit-slider-thumb {
     
                                 <div class="description-container m-t-20">
                                     <p>
-                                        {{single_product.description|truncatewords:15}}
+                                        {{single_product.description|truncatewords:10}}
                                     </p>
                                 </div><!-- /.description-container -->
     
@@ -328,6 +326,250 @@ input[type=range]::-webkit-slider-thumb {
     
                                     </div><!-- /.row -->
                                 </div><!-- /.price-container -->
+
+
+
+                                <!-- ---------------------------------- -->
+
+
+                                <div style="color: black;text-decoration: none;cursor: pointer;">
+                                    <a data-toggle="modal" data-target="#sizeChart">
+                                        <i class='fa fa-sort-numeric-asc fa-lg'></i> Size Chart
+                                    </a>
+
+
+                                    <div class="modal fade" id="sizeChart" role="dialog">
+                                        <div class="modal-dialog">
+                                        
+                                          <!-- Modal content-->
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                              <h4 class="modal-title">Size Chart</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="">
+                                                    <div class="text-center">
+
+                                                        <button type="button" style="justify-content: center;background: transparent; border: 1px solid black;padding: 7px;" id="convertButton" onclick="convertUnits()">See in Centimeters</button>                                                        <div class="row">
+                                                    </div>
+                                                        <div class="col-xs-12">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-hover table-striped" style="overflow: hidden;padding: 1px;">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th style="text-align: center;">SIZE</th>
+                                                                            <th style="text-align: center;">WAIST</th>
+                                                                            <th style="text-align: center;">LENGTH</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {% for size in pant_size %}
+                                                                        <tr>
+                                                                            <td style="text-align: center;">{{ size.size }}</td>
+                                                                            <td style="text-align: center;" class="inch-value">{{ size.waist }}</td>
+                                                                            <td style="text-align: center;" class="inch-value">{{ size.length }}</td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                        <script>
+                                                                            
+                                                                            function convertUnits() {
+    var inchElements = document.getElementsByClassName("inch-value");
+    var convertButton = document.getElementById("convertButton");
+
+    // Check if the button text is "Convert to Centimeters"
+    if (convertButton.textContent === "See in Centimeters") {
+        // Convert inch values to centimeters
+        for (var i = 0; i < inchElements.length; i++) {
+            var inchValue = inchElements[i].innerText;
+            var inchRange = inchValue.split(" - ");
+
+            if (inchRange.length > 1) {
+                var cmRange = inchRange.map(function(val) {
+                    return (parseFloat(val) * 2.54).toFixed(1); // Convert to centimeters with one decimal point
+                });
+                inchElements[i].innerText = cmRange.join(" - ");
+            } else {
+                var cmValue = (parseFloat(inchValue) * 2.54).toFixed(1); // Convert to centimeters with one decimal point
+                inchElements[i].innerText = cmValue;
+            }
+        }
+        // Change button text to "Convert to Inches"
+        convertButton.textContent = "See in  Inches";
+    } else { // If the button text is "Convert to Inches"
+        // Convert centimeter values to inches
+        for (var i = 0; i < inchElements.length; i++) {
+            var cmValue = inchElements[i].innerText;
+            var cmRange = cmValue.split(" - ");
+
+            if (cmRange.length > 1) {
+                var inchRange = cmRange.map(function(val) {
+                    return Math.round(parseFloat(val) / 2.54); // Convert to inches and round to the nearest whole number
+                });
+                inchElements[i].innerText = inchRange.join(" - ");
+            } else {
+                var inchValue = Math.round(parseFloat(cmValue) / 2.54); // Convert to inches and round to the nearest whole number
+                inchElements[i].innerText = inchValue;
+            }
+        }
+        // Change button text to "Convert to Centimeters"
+        convertButton.textContent = "See in Centimeters";
+    }
+}
+                                                                    
+                                                                        </script>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="container">
+                                                    <img src="{% static 'assets/pants.png' %}" class="img-responsive" alt="">
+                                                </div>
+                                                <hr>
+
+                                                <ol>
+                                                    <li>
+                                                        <b>WAIST: </b> For measuring the waist first button the pants up. Next spread the pants flat on the surface, and remove any fullness and wrinkles from it.
+                                                    </li>
+                                                    <li>
+                                                        <b>FRONT RISE:</b> With the pants buttoned up, spread the pants on the floor or table; next remove all wrinkles, and measure this region by starting from crotch seam spot to the spot of the waistband.
+                                                    </li>
+                                                    <li>
+                                                        <b>HIP:</b> Measure across the hip area, this is in most cases 1 1/2 inches below the zipper.
+                                                    </li>
+                                                    <li>
+                                                        <b>THIGH:</b> Starting at the crotch seam and ending 1–2 inches below the hip area.
+                                                    </li>
+                                                    <li>
+                                                        <b>LENGTH:</b> With the pants buttoned up, spread the pants on a table, floor or any other flat surface, with outseams on both corners. After removing all wrinkles and any fullness, measure the length from the top of the waistband.
+                                                    </li>
+                                                    <li>
+                                                        <b>KNEE: </b>Next remove any wrinkles and fullness if present. Measure across the knee area.
+                                                    </li>
+                                                    <li>
+                                                        <b>INSEAM:</b> Having the pants buttoned up, spread the pants on a surface flat. Now measure the inseam gap from the crotch, at the spot where the front and back seams meet, exactly where, depends on the length you desire ultimately.
+                                                    </li>
+                                                    <li>
+                                                        <b>LEG OPENING:</b> Now in the last step follow the same pattern as the previous steps, which is spread the pants on a flat surface e.g. table or floor. After removing any fullness or wrinkles, start measurement beginning from one side of the leg opening to the other side of the leg opening.
+                                                    </li>
+                                                </ol>
+
+                                                <hr>
+
+                                                <div class="">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-hover table-striped" style="overflow: hidden;padding: 1px;">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th style="text-align: center;">SIZE</th>
+                                                                            <th style="text-align: center;">WAIST</th>
+                                                                            <th style="text-align: center;">LENGTH</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {% for size in shirt_size %}
+                                                                        <tr>
+                                                                            <td style="text-align: center;">{{ size.size }}</td>
+                                                                            <td style="text-align: center;" class="inch-value">{{ size.waist }}</td>
+                                                                            <td style="text-align: center;" class="inch-value">{{ size.length }}</td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="container">
+                                                    <img src="{% static 'assets/shirt.png' %}" class="img-responsive" alt="">
+                                                </div>
+                                                <hr>
+
+                                                <ol>
+                                                    <li>
+                                                        <b>Neck to Shoulder:</b> Measure from the middle of the neck to end of shoulder (where the sleeve starts).
+                                                    </li>
+                                                    <li>
+                                                        <b>Sleeve length (A):</b> Measure from the center back of collar to the end of shoulder.
+                                                    </li>
+                                                    <li>
+                                                        <b>Sleeve length (B):</b> Measure from the shoulder to the wrist.
+                                                    </li>
+                                                    <li>
+                                                        <b>Shoulder to Shoulder:</b> Measure this length from one shoulder to another.
+                                                    </li>
+                                                    <li>
+                                                        <b>Chest:</b> Measure around the fullest part, place the tape close under the arms and make sure the tape is flat across the back.
+                                                    </li>
+                                                    <li>
+                                                       <b> Front Length:</b> Measure from the highest point of the shoulder to the desired hemline.
+                                                    </li>
+                                                    <li>
+                                                       <b>Hem:</b>  Measure from one side to another, but it is vital to take this measurement from above the elastic area (If sweatshirt have any).
+                                                    </li>
+                                                    <li>
+                                                        <b>Sleeve cuff:</b> At the widest point of the wrist, measure its circumference. Leave enough room for watches or jewelry worn often. Take this measurement from above the elastic area same as Hem length measurement
+                                                    </li>
+                                                </ol>
+
+
+                                            <div class="">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <div class="table-responsive">
+                                                                <table class="table" style="overflow: hidden;padding: 1px;">
+                                                                    <thead>
+                                                                        <tr >
+                                                                            <th style="text-align: center;">US/UK Size</th>
+                                                                            <th style="text-align: center;">XS</th>
+                                                                            <th style="text-align: center;">S</th>
+                                                                            <th style="text-align: center;">M</th>
+                                                                            <th style="text-align: center;">L</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        
+                                                                        <tr>
+                                                                            <th style="text-align: center;">Size on label</th>
+                                                                            <td style="text-align: center;">M</td>
+                                                                            <td style="text-align: center;">L</td>
+                                                                            <td style="text-align: center;">XL</td>
+                                                                            <td style="text-align: center;">XXL</td>
+                                                                        </tr>
+                                                                       
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <p><i>
+                                                    Sizes can vary from 2-3 centimeters because they are measured by hand. 1inch=2.54cm The size matched on a label can differ from the one you have ordered 
+                                                </i></p>
+                                            
+                                            </div>
+                                            <div class="modal-footer">
+                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                          </div>
+                                          
+                                        </div>
+                                      </div>
+                                </div>
+                           
+
+
+
+
+                                <!-- -------------------------------------------- -->
 
                              
                                 {% if single_product.stock <= 0 %} 
@@ -411,6 +653,20 @@ input[type=range]::-webkit-slider-thumb {
                                               </div>
                                             </div>
                                         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        
                                         
                                         <div style="background-color: #00000000;">
                                             <ol>
@@ -431,10 +687,80 @@ input[type=range]::-webkit-slider-thumb {
                                         </style>
                                        
                                        
-                                        <div class="add-btn" style="margin-top: 15px;">
-                                            <a  href="" class="btn btn-primary dbcs">Download Now</a>
-                                            <a  href="{% url 'order_product' single_product.slug %}" class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> Order Now</a>
+                                        <div class=""style="margin-top: 15px;display: flex;justify-content: center;cursor: pointer;">
+                                            <a onclick="downloadDesign()" style="color: #000;margin-right: 10px;" class="btn btn-primary dbcs">Download Now</a>
+                                            <a  href="{% url 'order_product' single_product.slug %}" style="background: #ffe600;color: black;cursor: pointer !important;padding: 10px 30px;" class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> Order Now</a>
                                         </div>
+
+
+
+
+
+                                        <div>
+                                            <ul>
+                                                <li>
+                                                    <b>
+                                                        <i class='fa fa-truck fa-lg'></i> Free Shipping
+                                                    </b>
+                                                </li>
+                                                <li>
+                                                    <ul style="margin-left: 20px;">
+                                                        <li>Free standard shipping on orders over 2500</li>
+                                                        <li>Estimated to be delivered on 3 Days.</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <style>
+                                            /* Center modal vertically and horizontally */
+                                            .modal-vertical-centered {
+                                                transform: translate(0, 50%);
+                                                top: 18%;
+                                            }
+                                          </style>
+                                      <br>
+                                        <div>
+                                            <ul style="cursor: pointer;" data-toggle="modal" data-target="#myModalSHipping">
+                                                <li>
+                                                    <b>
+                                                        <!-- <button type="button" class="btn btn-primary" >Open Modal</button> -->
+                                                        <i class='fa fa-shield fa-lg'></i> Free Return <i class='fa fa-question-circle-o fa-lg'></i>
+                                                    </b>
+                                                </li>
+                                                <li>
+                                                    <ul style="margin-left: 20px;">
+                                                        <li>Learn More</li>
+                                                        
+                                                    </ul>
+                                                </li>
+                                            </ul>
+        
+                                            <div class="modal fade" id="myModalSHipping" role="dialog">
+                                                <div class="modal-dialog modal-vertical-centered">
+                                                
+                                                  <!-- Modal content-->
+                                                  <div class="modal-content">
+                                                    <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                      <h4 class="modal-title">Free Returns</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                      <p>You may return most new, unopened items within 7 days of delivery for a full refund. We'll also pay the return shipping costs if the return is a result of our error (you received an incorrect or defective item, etc.).</p>
+                                                      <p>You should expect to receive your refund within 7days of giving your package to the return shipper, however, in many cases you will receive a refund more quickly. This time period includes the transit time for us to receive your return from the shipper (5 to 10 business days), the time it takes us to process your return once we receive it (3 to 5 business days), and the time it takes your bank to process our refund request (5 to 10 business days).</p>
+                                                      <p>If you need to return an item, simply login to your account, view the order using the "Complete Orders" link under the My Account menu and click the Return Item(s) button. We'll notify you via e-mail of your refund once we've received and processed the returned item.</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                  </div>
+                                                  
+                                                </div>
+                                              </div>
+                                              
+                                            </div>
+
+
+
 
                                         <!-- Button trigger modal -->
 
@@ -1169,18 +1495,73 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
+    
+
         function downloadDesign() {
-            var uniqueFilename = 'design_' + Date.now() + '.png';
-            var link = document.createElement('a');
-            link.download = uniqueFilename;
-            link.href = canvas.toDataURL({
-                format: 'png',
-                quality: 1
-            });
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+    var zip = new JSZip();
+
+    // Add edited canvas image to the zip
+    var editedImage = canvas.toDataURL({ format: 'png', quality: 1 });
+    zip.file('edited_image.png', editedImage.split('base64,')[1], { base64: true });
+
+    var promises = [];
+
+    // Add user-uploaded logo to the zip (if any)
+    var uploadedLogo = document.getElementById('imageLoader').files[0];
+    if (uploadedLogo) {
+        promises.push(addImageToZip(zip, uploadedLogo, 'user_logo.png'));
+    }
+
+    // Get all images added to the canvas
+    var canvasImages = canvas.getObjects('image');
+    canvasImages.forEach(function(image, index) {
+        var imageUrl = image.getSrc();
+        promises.push(fetchAndAddToZip(zip, imageUrl, 'canvas_image_' + (index + 1)));
+    });
+
+    Promise.all(promises)
+        .then(function() {
+            finalizeDownload(zip);
+        })
+        .catch(function(error) {
+            console.error('Error adding images to zip:', error);
+        });
+}
+
+function addImageToZip(zip, file, fileName) {
+    return new Promise(function(resolve, reject) {
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            zip.file(fileName, event.target.result.split('base64,')[1], { base64: true });
+            resolve();
+        };
+        reader.onerror = function(error) {
+            reject(error);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function fetchAndAddToZip(zip, imageUrl, imageName) {
+    return fetch(imageUrl)
+        .then(response => response.blob())
+        .then(blob => {
+            zip.file(imageName, blob);
+        });
+}
+
+function finalizeDownload(zip) {
+    // Generate the zip file
+    var timestamp = new Date().getTime(); // Current timestamp
+    var filename = 'design_' + timestamp + '.zip'; // Unique filename
+
+    zip.generateAsync({ type: 'blob' })
+        .then(function(content) {
+            // Trigger download with unique filename
+            saveAs(content, filename);
+        });
+}
+
 
 
 

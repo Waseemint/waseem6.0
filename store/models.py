@@ -91,3 +91,39 @@ class ProductGallery(models.Model):
     class Meta:
         verbose_name = 'productgallery'
         verbose_name_plural = 'product gallery'
+
+
+
+class ClothingSizePants(models.Model):
+    SIZE_CHOICES = [
+        ('XS', 'Extra Small'),
+        ('S', 'Small'),
+        ('M', 'Medium'),
+        ('L', 'Large'),
+        ('XL', 'Extra Large'),
+        ('XXL', 'Extra Large'),
+    ]
+    
+    size = models.CharField(max_length=3, choices=SIZE_CHOICES)
+    waist = models.CharField(max_length=20)
+    length = models.IntegerField()
+
+    def __str__(self):
+        return self.size
+
+class ClothingSizeShirts(models.Model):
+    SIZE_CHOICES = [
+        ('XS', 'Extra Small'),
+        ('S', 'Small'),
+        ('M', 'Medium'),
+        ('L', 'Large'),
+        ('XL', 'Extra Large'),
+        ('XXL', 'Extra Large'),
+    ]
+    
+    size = models.CharField(max_length=3, choices=SIZE_CHOICES)
+    waist = models.CharField(max_length=20)
+    length = models.IntegerField()
+
+    def __str__(self):
+        return self.size

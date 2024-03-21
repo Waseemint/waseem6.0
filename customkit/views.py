@@ -19,6 +19,7 @@ from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from store.models import ClothingSizePants, ClothingSizeShirts
 # Create your views here.
 
 
@@ -40,11 +41,15 @@ def custom_product_detail(request, product_slug):
     # Product gallery
     product_gallery = ProductGallery_Custom.objects.filter(product=single_product)
     custom_logo = CustomLogos.objects.all().order_by('-id')
+    pant_size = ClothingSizePants.objects.all()
+    shirt_size = ClothingSizeShirts.objects.all()
     context = {
         "single_product": single_product,
         "in_cart": in_cart,
         "product_gallery": product_gallery,
         "custom_logo":custom_logo,
+        'pant_size':pant_size,
+        'shirt_size':shirt_size,
     }
     return render(request, "customkit/custom_product_detail.html", context)
 
