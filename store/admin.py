@@ -1,6 +1,39 @@
 from django.contrib import admin
 from .models import Product, Variation, ReviewRating, ProductGallery, ClothingSizePants, ClothingSizeShirts
 import admin_thumbnails 
+from .models import SizeChart, FieldData
+
+from django.contrib import admin
+from .models import SizeChart, Sizes, SizeChartImage, FieldData
+
+class SizesInline(admin.StackedInline):
+    model = Sizes
+    extra = 1
+
+class SizeChartImageInline(admin.StackedInline):
+    model = SizeChartImage
+    extra = 1
+
+class FieldDataInline(admin.TabularInline):
+    model = FieldData
+    extra = 1
+
+@admin.register(SizeChart)
+class SizeChartAdmin(admin.ModelAdmin):
+    inlines = [SizesInline, SizeChartImageInline, FieldDataInline]
+
+@admin.register(Sizes)
+class SizesAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(SizeChartImage)
+class SizeChartImageAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(FieldData)
+class FieldDataAdmin(admin.ModelAdmin):
+    pass
+
 
 @admin_thumbnails.thumbnail('image')
 class ProductGalleryInline(admin.TabularInline):

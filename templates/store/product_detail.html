@@ -319,12 +319,14 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            {% for size in pant_size %}
+                                                                            {% for size in size_chart %}
+                                                                            {% for i in size.sizes_set.all %}
                                                                             <tr>
-                                                                                <td style="text-align: center;">{{ size.size }}</td>
-                                                                                <td style="text-align: center;" class="inch-value">{{ size.waist }}</td>
-                                                                                <td style="text-align: center;" class="inch-value">{{ size.length }}</td>
+                                                                                <td style="text-align: center;">{{ i.size }}</td>
+                                                                                <td style="text-align: center;" class="inch-value">{{ i.waist }}</td>
+                                                                                <td style="text-align: center;" class="inch-value">{{ i.length }}</td>
                                                                             </tr>
+                                                                            {% endfor %}
                                                                             {% endfor %}
                                                                             <script>
                                                                                 
@@ -381,97 +383,37 @@
                                                     </div>
 
                                                     <div class="container">
-                                                        <img src="{% static 'assets/pants.png' %}" class="img-responsive" alt="">
+                                                    
+                                                        {% for i in size_chart|slice:"0:1" %}
+                                                        
+                                                        {% for u in i.sizechartimage_set.all %}
+                                                        
+                                                        <img src="{{u.image.url}}" class="img-responsive" alt="{{u.name}}">
+                                                        
+                                                        {% endfor %}
+                                                        {% endfor %}
+                                                    
                                                     </div>
                                                     <hr>
 
                                                     <ol>
+                                                        {% for chart in size_chart|slice:"0:1" %}
+
+                                                        {% for field_data in chart.fielddata_set.all %}
                                                         <li>
-                                                            <b>WAIST: </b> For measuring the waist first button the pants up. Next spread the pants flat on the surface, and remove any fullness and wrinkles from it.
+                                                           {{ field_data.field }}
                                                         </li>
-                                                        <li>
-                                                            <b>FRONT RISE:</b> With the pants buttoned up, spread the pants on the floor or table; next remove all wrinkles, and measure this region by starting from crotch seam spot to the spot of the waistband.
-                                                        </li>
-                                                        <li>
-                                                            <b>HIP:</b> Measure across the hip area, this is in most cases 1 1/2 inches below the zipper.
-                                                        </li>
-                                                        <li>
-                                                            <b>THIGH:</b> Starting at the crotch seam and ending 1–2 inches below the hip area.
-                                                        </li>
-                                                        <li>
-                                                            <b>LENGTH:</b> With the pants buttoned up, spread the pants on a table, floor or any other flat surface, with outseams on both corners. After removing all wrinkles and any fullness, measure the length from the top of the waistband.
-                                                        </li>
-                                                        <li>
-                                                            <b>KNEE: </b>Next remove any wrinkles and fullness if present. Measure across the knee area.
-                                                        </li>
-                                                        <li>
-                                                            <b>INSEAM:</b> Having the pants buttoned up, spread the pants on a surface flat. Now measure the inseam gap from the crotch, at the spot where the front and back seams meet, exactly where, depends on the length you desire ultimately.
-                                                        </li>
-                                                        <li>
-                                                            <b>LEG OPENING:</b> Now in the last step follow the same pattern as the previous steps, which is spread the pants on a flat surface e.g. table or floor. After removing any fullness or wrinkles, start measurement beginning from one side of the leg opening to the other side of the leg opening.
-                                                        </li>
+                                                        {% endfor %}
+                                                        {% endfor %}
+
+                                                       
                                                     </ol>
 
                                                     <hr>
 
-                                                    <div class="">
-                                                        <div class="row">
-                                                            <div class="col-xs-12">
-                                                                <div class="table-responsive">
-                                                                    <table class="table table-hover table-striped" style="overflow: hidden;padding: 1px;">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th style="text-align: center;">SIZE</th>
-                                                                                <th style="text-align: center;">WAIST</th>
-                                                                                <th style="text-align: center;">LENGTH</th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            {% for size in shirt_size %}
-                                                                            <tr>
-                                                                                <td style="text-align: center;">{{ size.size }}</td>
-                                                                                <td style="text-align: center;" class="inch-value">{{ size.waist }}</td>
-                                                                                <td style="text-align: center;" class="inch-value">{{ size.length }}</td>
-                                                                            </tr>
-                                                                            {% endfor %}
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    
 
-                                                    <div class="container">
-                                                        <img src="{% static 'assets/shirt.png' %}" class="img-responsive" alt="">
-                                                    </div>
-                                                    <hr>
-
-                                                    <ol>
-                                                        <li>
-                                                            <b>Neck to Shoulder:</b> Measure from the middle of the neck to end of shoulder (where the sleeve starts).
-                                                        </li>
-                                                        <li>
-                                                            <b>Sleeve length (A):</b> Measure from the center back of collar to the end of shoulder.
-                                                        </li>
-                                                        <li>
-                                                            <b>Sleeve length (B):</b> Measure from the shoulder to the wrist.
-                                                        </li>
-                                                        <li>
-                                                            <b>Shoulder to Shoulder:</b> Measure this length from one shoulder to another.
-                                                        </li>
-                                                        <li>
-                                                            <b>Chest:</b> Measure around the fullest part, place the tape close under the arms and make sure the tape is flat across the back.
-                                                        </li>
-                                                        <li>
-                                                           <b> Front Length:</b> Measure from the highest point of the shoulder to the desired hemline.
-                                                        </li>
-                                                        <li>
-                                                           <b>Hem:</b>  Measure from one side to another, but it is vital to take this measurement from above the elastic area (If sweatshirt have any).
-                                                        </li>
-                                                        <li>
-                                                            <b>Sleeve cuff:</b> At the widest point of the wrist, measure its circumference. Leave enough room for watches or jewelry worn often. Take this measurement from above the elastic area same as Hem length measurement
-                                                        </li>
-                                                    </ol>
+                                                    
 
 
                                                 <div class="">

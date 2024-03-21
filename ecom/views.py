@@ -1,12 +1,16 @@
 from django.shortcuts import render
 from store.models import Product, ReviewRating
-
+from youtube.models import Video
 
 def home(request):
     reviews = None
     products = Product.objects.all().filter(is_available=True).order_by('-created_date')
     for product in products:
         reviews = ReviewRating.objects.filter(product_id=product.id, status=True)
+    videos = Video.objects.all().order_by('-id')
+
     context = {'products': products,
-               'reviews': reviews}
+               'reviews': reviews,
+               'videos':videos
+               }
     return render(request, 'home.html',context)

@@ -8,7 +8,7 @@ from carts.models import CartItem
 from orders.models import OrderProduct
 from carts.views import _cart_id
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from store.models import ClothingSizePants, ClothingSizeShirts
+from store.models import ClothingSizePants, ClothingSizeShirts, SizeChart
 
 
 def store(request, category_slug=None):
@@ -64,6 +64,7 @@ def product_detail(request, category_slug, product_slug):
     sizes = single_product.variation_set.sizes()
     pant_size = ClothingSizePants.objects.all()
     shirt_size = ClothingSizeShirts.objects.all()
+    size_chart = SizeChart.objects.filter(product=single_product)
 
 
     context = {
@@ -77,6 +78,7 @@ def product_detail(request, category_slug, product_slug):
         'sizes':sizes,
         'pant_size':pant_size,
         'shirt_size':shirt_size,
+        'size_chart':size_chart,
     }
     return render(request, "store/product_detail.html", context)
 

@@ -5,7 +5,6 @@ from django.urls import reverse
 from category.models import ChildCategory
 from accounts.models import Account
 
-
 class Product(models.Model):
     product_name = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
@@ -38,6 +37,39 @@ class Product(models.Model):
         if reviews['count'] is not None:
             count = int(reviews['count'])
         return count
+
+
+
+
+class SizeChart(models.Model):
+   
+    name = models.CharField(max_length=50)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+class Sizes(models.Model):
+    SIZE_CHOICES = [
+        ('XS', 'Extra Small'),
+        ('S', 'Small'),
+        ('M', 'Medium'),
+        ('L', 'Large'),
+        ('XL', 'Extra Large'),
+        ('XXL', 'Extra Large'),
+    ]
+    chart = models.ForeignKey(SizeChart, default=None, on_delete=models.CASCADE)
+    size = models.CharField(max_length=3, choices=SIZE_CHOICES)
+    waist = models.CharField(max_length=20)
+    length = models.IntegerField()
+
+class SizeChartImage(models.Model):
+    chart = models.ForeignKey(SizeChart, default=None, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="sizechart/")
+
+
+
+class FieldData(models.Model):
+    chart = models.ForeignKey(SizeChart, default=None, on_delete=models.CASCADE)
+    field = models.CharField(max_length=1000)
+
 
 
 class VariationManager(models.Manager):
