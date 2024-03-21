@@ -67,6 +67,8 @@ WSGI_APPLICATION = 'ecom.wsgi.application'
 AUTH_USER_MODEL = "accounts.Account"
 
 
+
+
 DATABASES = { 
     'default': { 
         'ENGINE': 'django.db.backends.postgresql_psycopg2', 
