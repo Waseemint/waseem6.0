@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['https://waseemint.com/','waseemint.com','waseem-int-d368a88e8f0a.herokuapp.com','www.waseemint.com','127.0.0.1']
 
 INSTALLED_APPS = [
