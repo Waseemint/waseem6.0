@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['https://waseemint.com/','waseemint.com','waseem-int-d368a88e8f0a.herokuapp.com','www.waseemint.com','127.0.0.1']
 
 INSTALLED_APPS = [
@@ -108,10 +108,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
-# if DEBUG:
-    # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-# else:
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+if DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
